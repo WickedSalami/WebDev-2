@@ -29,16 +29,14 @@ function displayContacts() {
 
     contacts.forEach((contact, index) => {
         const row = tableBody.insertRow();
-        row.innerHTML = `
-            <td>${contact[0]}</td>
-            <td>${contact[1]}</td>
-            <td>${contact[2]}</td>
-            <td>${contact[3]}</td>
-            <td>
-                <button onclick="editContact(${index})">Edit</button>
-                <button onclick="deleteContact(${index})">Delete</button>
-            </td>
-        `;
+        row.innerHTML = `<td>${contact[0]}</td>
+                        <td>${contact[1]}</td>
+                        <td>${contact[2]}</td>
+                        <td>${contact[3]}</td>
+                        <td>
+                            <button onclick="editContact(${index})">Edit</button>
+                            <button onclick="deleteContact(${index})">Delete</button>
+                        </td>`;
     });
 }
 
