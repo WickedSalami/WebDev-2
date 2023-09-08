@@ -1,64 +1,58 @@
-let contacts = [];
+const contactForm = document.getElementById('contact-form');
+const lastNameInput = document.getElementById('last-name');
+const firstNameInput = document.getElementById('first-name');
+const emailInput = document.getElementById('email');
+const contactNumberInput = document.getElementById('contact-number');
+const addContactButton = document.getElementById('add-contact');
+const contactTableBody = document.getElementById('table-body');
+
+const contacts = [];
 
 function addContact() {
-    const lastName = document.getElementById("last-name").value;
-    const firstName = document.getElementById("first-name").value;
-    const email = document.getElementById("email").value;
-    const contactNumber = document.getElementById("contact-number").value;
+    const lastName = lastNameInput.value;
+    const firstName = firstNameInput.value;
+    const email = emailInput.value;
+    const contactNumber = contactNumberInput.value;
 
-    if(lastName === "" && firstName === "" && email === "" && contactNumber === "") {
-        alert("Please fill up all the text fields");
-        return;
+    if (lastName && firstName && email && contactNumber) {
+        const row = document.createElement('tr');
+
+        row.innerHTML = 
+            `<td>${lastName}</td>
+            <td>${firstName}</td>
+            <td>${email}</td>
+            <td>${contactNumber}</td>
+            <td>
+                <button onclick="editContact(${contacts.length})">Edit</button>
+                <button onclick="deleteContact(${contacts.length})">Delete</button>
+            </td>`;
+
+        contactTableBody.appendChild(row);
+
+       lastNameInput.value = '';
+        firstNameInput.value = '';
+        emailInput.value = '';
+        contactNumberInput.value = '';
+
+    } else {
+        alert('Please fill up all the text fields.');
     }
-
-    const newContact = [lastName, firstName, email, contactNumber];
-
-    contacts.push(newContact);
-
-    document.getElementById("last-name").value = "";
-    document.getElementById("first-name").value = "";
-    document.getElementById("email").value = "";
-    document.getElementById("contact-number").value = "";
-
-    displayContacts();
-}
-
-function displayContacts() {
-    const tableBody = document.getElementById("table-body");
-    tableBody.innerHTML = "";
-
-    contacts.forEach((contact, index) => {
-        const row = tableBody.insertRow();
-        row.innerHTML = `<td>${contact[0]}</td>
-                        <td>${contact[1]}</td>
-                        <td>${contact[2]}</td>
-                        <td>${contact[3]}</td>
-                        <td>
-                            <button onclick="editContact(${index})">Edit</button>
-                            <button onclick="deleteContact(${index})">Delete</button>
-                        </td>`;
-    });
 }
 
 function editContact(index) {
-    const contact = contacts[index];
+    const row = contactTableBody.children[index];
 
-    document.getElementById("last-name").value = contact[0];
-    document.getElementById("first-name").value = contact[1];
-    document.getElementById("email").value = contact[2];
-    document.getElementById("contact-number").value = contact[3];
+    lastNameInput.value = row.cells[0].textContent;
+    firstNameInput.value = row.cells[1].textContent;
+    emailInput.value = row.cells[2].textContent;
+    contactNumberInput.value = row.cells[3].textContent;
 
-    contacts.splice(index, 1);
-
-    displayContacts();
+    contactTableBody.removeChild(row);
 }
 
 function deleteContact(index) {
-    contacts.splice(index, 1);
-
-    displayContacts();
+    const row = contactTableBody.children[index];
+    contactTableBody.removeChild(row);
 }
 
-document.getElementById("add-contact").addEventListener("click", addContact);
-
-displayContacts();
+addContactButton.addEventListener('click', addContact);
